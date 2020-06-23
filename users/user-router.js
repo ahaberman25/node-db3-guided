@@ -63,6 +63,15 @@ router.get("/users/:id/posts", validateUserId(), async (req, res, next) => {
 	}
 })
 
+router.get("/users/:id/posts/:postID", validateUserId(), async (req, res, next) => {
+	try {
+		const posts = await userModel.findPostsByID(req.params.id, req.params.postID)
+		res.json(posts)
+	} catch (err) {
+		next(err)
+	}
+})
+
 function validateUserId() {
 	return async (req, res, next) => {
 		try {
