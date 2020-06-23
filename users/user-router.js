@@ -1,5 +1,6 @@
 const express = require("express")
 const db = require("../data/config")
+const userModel = require("./user-model")
 
 const router = express.Router()
 
@@ -49,6 +50,15 @@ router.delete("/users/:id", validateUserId(), async (req, res, next) => {
 
 		res.status(204).end()
 	} catch(err) {
+		next(err)
+	}
+})
+
+router.get("/users/:id/posts", validateUserId(), async (req, res, next) => {
+	try {
+		const posts = await userModel.findPostsByUserId(req.params.id)
+		res.json(posts)
+	} catch (err) {
 		next(err)
 	}
 })
